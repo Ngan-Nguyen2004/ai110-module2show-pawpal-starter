@@ -22,13 +22,26 @@ Your final app should:
 - Display the plan clearly (and ideally explain the reasoning)
 - Include tests for the most important scheduling behaviors
 
-## Smarter Scheduling
+## Features
 
-PawPal+ now includes intelligent algorithms for enhanced functionality:
-- **Sorting**: Tasks are automatically sorted by time using Python's `sorted()` with a lambda key for datetime parsing.
-- **Filtering**: Filter tasks by completion status (pending/completed) or pet name for better organization.
-- **Recurring Tasks**: Marking a task complete automatically generates the next occurrence (daily or weekly) using `timedelta`.
-- **Conflict Detection**: Detects and warns about tasks scheduled at the same time to prevent overlaps.
+| Feature | Description |
+|---|---|
+| **Multi-pet support** | Register multiple pets under one owner; each task is linked to a specific pet |
+| **Sorting by time** | `generate_daily_plan()` returns tasks sorted by `scheduled_time` using Python's `sorted()` with a `lambda` key |
+| **Conflict detection** | The UI flags any two tasks that share the exact same scheduled time with a `st.warning` message naming both tasks |
+| **Daily recurrence** | Completing a daily task auto-schedules a one-time follow-up for the next day via `timedelta(days=1)` |
+| **Weekly recurrence** | A weekly task appears in the plan on every 7-day multiple from its start date; marking complete stops future generation |
+| **Pet-level filtering** | The daily plan view lets the owner filter results to a single pet |
+| **Priority labels** | Tasks carry a 1–3 priority value displayed as High / Medium / Low with colour indicators |
+
+## 📸 Demo
+
+<!-- After running the app, take a screenshot and save it to your project folder, then update the path below -->
+<a href="/course_images/ai110/pawpal_screenshot.png" target="_blank">
+  <img src='/course_images/ai110/pawpal_screenshot.png' title='PawPal App' width='' alt='PawPal App' class='center-block' />
+</a>
+
+> To run the app locally: `streamlit run app.py`
 
 ## Testing PawPal+
 
