@@ -7,65 +7,31 @@
 - Briefly describe your initial UML design.
 - What classes did you include, and what responsibilities did you assign to each?
 
+The initial UML design is a class diagram outlining the main components of PawPal+, a pet care scheduling app. It focuses on managing pets, tasks, owners, scheduling logic, and notifications, with relationships showing how they interact (e.g., owners manage pets, tasks belong to pets).
+
+Classes included:
+- **Pet**: Holds pet details like name, species, age, preferences, and health notes. Responsibilities: Update preferences and retrieve associated schedules.
+- **Task**: Represents care activities with description, duration, priority, time, and pet reference. Responsibilities: Schedule, reschedule, and check completion status.
+- **Owner**: Manages owner info and their pets. Responsibilities: Add/remove pets and view schedules.
+- **Scheduler**: Handles task lists and constraints. Responsibilities: Generate, optimize schedules, and check for conflicts.
+- **Notification**: Manages reminders for tasks. Responsibilities: Send notifications and set reminders.
+
 **b. Design changes**
 
 - Did your design change during implementation?
 - If yes, describe at least one change and why you made it.
 
----
+Yes, the design changed during implementation. One key change was adopting Python dataclasses for the Pet and Task classes instead of regular classes with manual __init__ methods. This was done to reduce boilerplate code, automatically generate useful methods like __repr__ and __eq__, and improve code readability and maintainability without sacrificing functionality.
 
-## 2. Scheduling Logic and Tradeoffs
+## 2. Implementation
 
-**a. Constraints and priorities**
+**a. Key algorithms**
 
-- What constraints does your scheduler consider (for example: time, priority, preferences)?
-- How did you decide which constraints mattered most?
+- Describe one key algorithm you implemented (e.g., sorting, filtering, conflict detection).
+- How does it work? Why did you choose this approach?
 
 **b. Tradeoffs**
 
-- Describe one tradeoff your scheduler makes.
-- Why is that tradeoff reasonable for this scenario?
+- Describe one tradeoff your scheduler makes (e.g., only checking for exact time matches instead of overlapping durations).
 
----
-
-## 3. AI Collaboration
-
-**a. How you used AI**
-
-- How did you use AI tools during this project (for example: design brainstorming, debugging, refactoring)?
-- What kinds of prompts or questions were most helpful?
-
-**b. Judgment and verification**
-
-- Describe one moment where you did not accept an AI suggestion as-is.
-- How did you evaluate or verify what the AI suggested?
-
----
-
-## 4. Testing and Verification
-
-**a. What you tested**
-
-- What behaviors did you test?
-- Why were these tests important?
-
-**b. Confidence**
-
-- How confident are you that your scheduler works correctly?
-- What edge cases would you test next if you had more time?
-
----
-
-## 5. Reflection
-
-**a. What went well**
-
-- What part of this project are you most satisfied with?
-
-**b. What you would improve**
-
-- If you had another iteration, what would you improve or redesign?
-
-**c. Key takeaway**
-
-- What is one important thing you learned about designing systems or working with AI on this project?
+The scheduler checks for exact time matches instead of overlapping durations to keep the logic simple and avoid complex datetime range comparisons, which could increase computational overhead for large schedules. This tradeoff prioritizes ease of implementation and readability over detecting subtle conflicts like a 30-minute task overlapping with another.

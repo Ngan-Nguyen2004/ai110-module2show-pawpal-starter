@@ -2,7 +2,7 @@ import streamlit as st
 
 st.set_page_config(page_title="PawPal+", page_icon="🐾", layout="centered")
 
-st.title("🐾 PawPal+")
+st.title("🐾 PawPal+ Pet Care App")
 
 st.markdown(
     """
@@ -86,3 +86,39 @@ Suggested approach:
 4. Connect your scheduler here and display results.
 """
     )
+
+# Example: Add Pet Form (replace placeholder)
+with st.form("add_pet_form"):
+    pet_name = st.text_input("Pet Name")
+    pet_species = st.selectbox("Species", ["Dog", "Cat", "Bird"])
+    pet_age = st.number_input("Age", min_value=0)
+    submitted = st.form_submit_button("Add Pet")
+    if submitted and pet_name:
+        new_pet = Pet(name=pet_name, species=pet_species, age=pet_age, preferences=[], health_notes="")
+        owner.add_pet(new_pet)  # Call the method
+        st.success(f"Added {pet_name}!")  # Update UI feedback
+
+# Example: Add Task to a Pet (replace placeholder)
+st.subheader("Add Task to Pet")
+pet_names = [pet.name for pet in owner.pets]
+if pet_names:
+    selected_pet = st.selectbox("Select Pet", pet_names)
+    with st.form("add_task_form"):
+        task_desc = st.text_input("Task Description")
+        task_time = st.text_input("Time (e.g., 2023-10-01 08:00)")
+        task_freq = st.selectbox("Frequency", ["daily", "weekly"])
+        task_submitted = st.form_submit_button("Add Task")
+        if task_submitted and task_desc and task_time:
+            pet = next(p for p in owner.pets if p.name == selected_pet)
+            new_task = Task(description=task_desc, time=task_time, frequency=task_freq)
+            pet.add_task(new_task)  # Call the method
+            st.success(f"Added task to {selected_pet}!")
+
+# Example: View Schedule (replace placeholder)
+st.subheader("Today's Schedule")
+schedule = owner.view_schedule()  # Call the method
+if schedule:
+    for task in schedule:
+        st.write(f"- {task.description} at {task.time} ({task.frequency})")
+else:
+    st.write("No tasks scheduled.")

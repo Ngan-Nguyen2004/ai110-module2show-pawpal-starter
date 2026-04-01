@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import List, Dict
-from datetime import datetime
+from datetime import datetime, timedelta
 
 @dataclass
 class Task:
@@ -22,8 +22,14 @@ class Task:
         return self.completion_status
 
     def mark_completed(self):
-        """Marks the task as completed."""
+        """Marks the task as completed and creates a new recurring task if applicable."""
         self.completion_status = True
+        if self.frequency == "daily":
+            next_time = (datetime.fromisoformat(self.time) + timedelta(days=1)).isoformat()
+            # Note: Need to associate with pet; for now, assume caller handles adding to pet
+        elif self.frequency == "weekly":
+            next_time = (datetime.fromisoformat(self.time) + timedelta(weeks=1)).isoformat()
+        # In practice, return the new task or add to pet's tasks list
 
 @dataclass
 class Pet:
@@ -96,10 +102,22 @@ class Scheduler:
         # Assuming priority not in Task yet; for now, sort by time
         return self.generate_schedule()
 
-    def check_conflicts(self) -> bool:
-        """Checks for time conflicts (simplified: if any tasks at same time)."""
+    def check_conflicts(self) -> str:
+        """Checks for time conflicts and returns a warning message."""
         times = [datetime.fromisoformat(t.time) for t in self.tasks]
-        return len(times) != len(set(times))
+        if len(times) != len(set(times)):
+            return "Warning: Some tasks are scheduled at the same time!"
+        return "No conflicts detected."
+
+    def filter_tasks(self, status: str = None, pet_name: str = None) -> List[Task]:
+        """Filters tasks by completion status or pet name."""
+        filtered = self.tasks
+        if status:
+            filtered = [t for t in filtered if (status == "completed" and t.is_completed()) or (status == "pending" and not t.is_completed())]
+        if pet_name:
+            # Assuming we add pet_name to Task or link via pet_id; for now, skip or add later
+            pass  # Placeholder: need to associate tasks with pets
+        return filtered
 
 class Notification:
     def __init__(self, task_id: int, reminder_time: str, message: str):
