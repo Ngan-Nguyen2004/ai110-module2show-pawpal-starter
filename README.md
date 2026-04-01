@@ -30,6 +30,43 @@ PawPal+ now includes intelligent algorithms for enhanced functionality:
 - **Recurring Tasks**: Marking a task complete automatically generates the next occurrence (daily or weekly) using `timedelta`.
 - **Conflict Detection**: Detects and warns about tasks scheduled at the same time to prevent overlaps.
 
+## Testing PawPal+
+
+### Run the test suite
+
+```bash
+python -m pytest test_pawpal.py -v
+```
+
+### What the tests cover
+
+The test suite contains **13 automated tests** across two categories:
+
+**Happy paths**
+- Basic task scheduling and sorting by time
+- Scheduling tasks across multiple pets
+- Recurring task generation (daily recurrence creates a follow-up after completion)
+- Sorting tasks with different priorities (time-based ordering)
+- Task completion and status updates
+
+**Edge cases**
+- Pet with no tasks (empty plan)
+- Two tasks scheduled at the exact same time
+- Recurring task overlapping with a one-time task (no false conflict blocking)
+- Weekly recurring task continues indefinitely until marked complete
+- 50 tasks sorted correctly in a large plan
+- Tasks at boundary datetimes (near midnight, leap year date)
+- Empty scheduler with no pets or tasks
+- Modifying recurrence after completion has no unintended side effects
+
+### Confidence Level
+
+**4 / 5 stars**
+
+All 13 tests pass. The core scheduling behaviors — sorting, filtering, recurring tasks, and completion logic — are well covered. One star is withheld because the Streamlit UI layer (`app.py`) is not yet integration-tested, and conflict detection (same-time tasks) is detected but not enforced.
+
+---
+
 ## Getting started
 
 ### Setup
